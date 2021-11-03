@@ -1,0 +1,9 @@
+C:\Users\sasha\source\repos\coursework\coursework\Debug\coursework.vcxproj.AssemblyReference.cache
+C:\Users\sasha\source\repos\coursework\coursework\Debug\coursework.MyForm.resources
+C:\Users\sasha\source\repos\coursework\coursework\Debug\coursework.vcxproj.GenerateResource.cache
+C:\Users\sasha\Downloads\coursework\coursework\Debug\coursework.vcxproj.AssemblyReference.cache
+C:\Users\sasha\Downloads\coursework\coursework\Debug\coursework.MyForm.resources
+C:\Users\sasha\Downloads\coursework\coursework\Debug\coursework.vcxproj.GenerateResource.cache
+D:\Alex\Desktop\MySelection\coursework\coursework\Debug\coursework.vcxproj.AssemblyReference.cache
+D:\Alex\Desktop\MySelection\coursework\coursework\Debug\coursework.MyForm.resources
+D:\Alex\Desktop\MySelection\coursework\coursework\Debug\coursework.vcxproj.GenerateResource.cache
