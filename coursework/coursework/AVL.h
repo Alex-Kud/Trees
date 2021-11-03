@@ -4,6 +4,7 @@
 #include "Node.h"
 #include "isFoundInAvl.h"
 #include <list>
+#include <stack>
 #include <cmath>
 #include <string>
 using namespace std;
@@ -30,7 +31,6 @@ public:
 	void set_N(int N) { this->N = N; }
 	// Добавление значения
 	void add(int val) {
-		//bool* patha = new bool[N];
 		// Дерево пустое
 		if (root == nullptr)
 			root = new Node(val);
@@ -89,9 +89,7 @@ public:
 				if (isAdd) {
 					current = root;
 					current->set_height(current->get_height() + 1);
-					list<bool>::iterator it;
 					//Увеличиваем значение высоты height на всех уровнях
-
 					for (int j = 0; j < c; j++) {
 						if (patha[j])
 							current = current->get_right();
@@ -101,13 +99,13 @@ public:
 					}
 
 					for (int j = 0; j < c; j++) {
-						if(modul(needBalance(current)) >= 2)
+						if(abs(needBalance(current)) >= 2)
 							balance(current);
 						current = current->get_parent();
 						fixheight(current);
 					}
 					// Для корня
-					if (modul(needBalance(current)) >= 2)
+					if (abs(needBalance(current)) >= 2)
 						balance(current);
 					fixheight(current);
 				}
@@ -117,7 +115,100 @@ public:
 		}
 	}
 	// Добавление значения (для сортировки)
-	void add(int val, int& sr, int &per) {
+/*	void add(int val, int& sr, int& per) {
+		// Дерево пустое
+		if (root == nullptr)
+			root = new Node(val);
+		// Дерево не пустое
+		else {
+			Node* current = root;
+			bool isEnd = false;  // Конец дерева
+			// Путь к добавленной вершине - false - лево, true - право
+			bool* patha = new bool[N];
+			// Переменная, чтобы проверить увеличилась ли высота дерева (была на уровне с новой ячейкой другая)
+			// Если добавляется уровень - true
+			bool isAdd = false;
+			int c = 0;
+			// Пока не достигнут конец дерева
+			while (!isEnd) {
+				// Если значения равны
+				if (val == current->get_value()) {
+					current->set_same(current->get_same() + 1);
+					count++;
+					isEnd = true;
+					sr++;
+				}
+				// Если значение меньше корня
+				else if (val < current->get_value()) {
+					sr += 2;
+					// Дошли до конца
+					if (current->get_left() == nullptr) {
+						// Добавили уровень
+						if (current->get_right() == nullptr)
+							isAdd = true;
+						current->set_left(new Node(val, current));
+						count++;
+						isEnd = true;
+					}
+					else {
+						current = current->get_left();
+						patha[c] = false;
+					}
+				}
+				// Если значение больше корня
+				else {
+					sr += 2;
+					// Дошли до конца
+					if (current->get_right() == nullptr) {
+						// Добавили уровень
+						if (current->get_left() == nullptr)
+							isAdd = true;
+						current->set_right(new Node(val, current));
+						count++;
+						isEnd = true;
+					}
+					else {
+						current = current->get_right();
+						patha[c] = true;
+					}
+				}
+
+				// Если добавили уровень, значит увеличиваем height
+				if (isAdd) {
+					current = root;
+					current->set_height(current->get_height() + 1);
+					//Увеличиваем значение высоты height на всех уровнях
+					for (int j = 0; j < c; j++) {
+						if (patha[j])
+							current = current->get_right();
+						else
+							current = current->get_left();
+						current->set_height(current->get_height() + 1);
+					}
+
+					for (int j = 0; j < c; j++) {
+						if (abs(needBalance(current)) >= 2) {
+							balance(current);
+							per++;
+						}
+						current = current->get_parent();
+						fixheight(current);
+					}
+					// Для корня
+					if (abs(needBalance(current)) >= 2) {
+						balance(current);
+						per++;
+					}
+					fixheight(current);
+				}
+				c++;
+			}
+			delete[] patha;
+		}
+	}*/
+
+	// Добавление значения (для сортировки)
+	void add(int val, int& sr, int& per) {
 		//bool* patha = new bool[N];
 		// Дерево пустое
 		if (root == nullptr)
@@ -192,7 +283,7 @@ public:
 					}
 
 					for (int j = 0; j < c; j++) {
-						if (modul(needBalance(current)) >= 2) {
+						if (abs(needBalance(current)) >= 2) {
 							balance(current);
 							per++;
 						}
@@ -200,7 +291,7 @@ public:
 						fixheight(current);
 					}
 					// Для корня
-					if (modul(needBalance(current)) >= 2) {
+					if (abs(needBalance(current)) >= 2) {
 						balance(current);
 						per++;
 					}
@@ -236,22 +327,17 @@ public:
 			//последний элемент
 			else if (current->get_left() == nullptr && current->get_right() == nullptr) {
 				Node* temp = current->get_parent();
-				//current = nullptr;
-				if (temp->get_left() == nullptr) {
+				if (current == root) {
+					root = nullptr;	// Для корня
+					return;
+				}
+				else if (temp->get_left() == nullptr) {
 					current->set_parent(nullptr);
 					temp->set_right(nullptr);
-				}
-				else if (temp->get_right() == nullptr) {
-					current->set_parent(nullptr);
-					temp->set_left(nullptr);
-				}
-				else if (temp->get_left() == current) {
-					current->set_parent(nullptr);
-					temp->set_left(nullptr);
 				}
 				else {
 					current->set_parent(nullptr);
-					temp->set_right(nullptr);
+					temp->set_left(nullptr);
 				}
 
 				for (int i = 0; i < p.path.size() - 1; i++) {
@@ -268,7 +354,12 @@ public:
 			//нет левого поддереваа
 			else if (current->get_left() == nullptr) {
 				Node* temp = current->get_parent();
-				if (temp->get_left() == current) {
+				if (current == root) {
+					current->get_right()->set_parent(nullptr);
+					root = current->get_right();
+					fixheight(root);
+				}
+				else if (temp->get_left() == current) {
 					temp->set_left(current->get_right());
 					current->get_right()->set_parent(temp);
 					current->set_parent(nullptr);
@@ -284,7 +375,12 @@ public:
 			//нет правого поддерева
 			else if (current->get_right() == nullptr) {
 				Node* temp = current->get_parent();
-				if (temp->get_right() == current) {
+				if (current == root) {
+					current->get_left()->set_parent(nullptr);
+					root = current->get_left();
+					fixheight(root);
+				}
+				else if (temp->get_right() == current) {
 					temp->set_right(current->get_left());
 					current->get_left()->set_parent(temp);
 					current->set_parent(nullptr);
@@ -298,7 +394,7 @@ public:
 				}
 			}
 			else {
-				//ищем ближайшее значение
+				// есть 2 поддерева
 				Node* temp = current->get_right();
 				while (temp->get_left() != nullptr)
 					temp = temp->get_left();
@@ -312,6 +408,7 @@ public:
 					temp1->set_left(nullptr);
 					temp->set_parent(nullptr);
 				}
+
 				while (temp1->get_parent() != nullptr) {
 					if (abs(needBalance(temp1)) >= 2)
 						balance(temp1);
@@ -384,20 +481,47 @@ public:
 		Node* current = root;
 		inOrder(current, data, num);
 	}
-	void show(System::Windows::Forms::TextBox^ textBox, int num) {
-		string* output = new string[num];
-		string ou;
-		Node* current = root;
-		inOrder(current, output, num);
+	// Вывод дерева
+	void printTree(System::Windows::Forms::TextBox^ textBox) { // метод для вывода дерева в консоль
 		textBox->Text = "";
-		for (int i = log2(num); i >= 0; --i)
-		//for (int i = 0; i < num; ++i)
-			textBox->Text += gcnew System::String(output[i].c_str()) + System::Environment::NewLine;
-		//for (int i = 0; i < output->size(); ++i)
-			
-		
-			
+		stack <Node*> globalStack; // общий стек для значений дерева
+		globalStack.push(root);
+		bool isRowEmpty = false;
+		string out;
+		while (!isRowEmpty) {
+			stack <Node*> localStack; // локальный стек для задания потомков элемента
+			isRowEmpty = true;
+			while (!globalStack.empty()) { // покуда в общем стеке есть элементы
+				Node* temp = globalStack.top(); // берем следующий, при этом удаляя его из стека
+				globalStack.pop();
 
+
+				if (temp != nullptr) {
+					out.append(to_string(temp->get_value())); // выводим его значение в консоли
+					out.push_back('[');
+					out.append(to_string(temp->get_same()));
+					out.push_back(']');
+					out.push_back(';');
+
+					localStack.push(temp->get_left()); // сохраняем в локальный стек, наследники текущего элемента
+					localStack.push(temp->get_right());
+					if (temp->get_left() != nullptr ||
+						temp->get_right() != nullptr)
+						isRowEmpty = false;
+				}
+				else {
+					out.append("____; "); // - если элемент пустой
+					localStack.push(nullptr);
+					localStack.push(nullptr);
+				}
+			}
+			textBox->Text += gcnew System::String(out.c_str()) + System::Environment::NewLine;
+			out = "";
+			while (!localStack.empty()) {
+				globalStack.push(localStack.top()); // перемещаем все элементы из локального стека в глобальный
+				localStack.pop();
+			}
+		}
 	}
 
 private:
@@ -521,42 +645,8 @@ private:
 		if (data.size() == num) return;
 	}
 
-	// Рекурсивный обход
-	void inOrder(const Node* current, string* out, const int num) {
-		int counter = 0;
 
 
 
-		if (current->get_left() == nullptr) {
-			out[current->get_height()].append(to_string(current->get_value()));
-			out[current->get_height()].push_back('[');
-			out[current->get_height()].append(to_string(current->get_same()));
-			out[current->get_height()].push_back(']');
-			out[current->get_height()].push_back('|');
 
-			counter += current->get_same() + 1;
-			if (current->get_right() != nullptr)
-				inOrder(current->get_right(), out, num);
-			return;
-		}
-		if (counter == num) return;
-		if (current->get_left() != nullptr)
-			inOrder(current->get_left(), out, num);
-
-		out[current->get_height()].append(to_string(current->get_value()));
-		out[current->get_height()].push_back('[');
-		out[current->get_height()].append(to_string(current->get_same()));
-		out[current->get_height()].push_back(']');
-		out[current->get_height()].push_back('|');
-
-		if (counter == num) return;
-		if (current->get_right() != nullptr)
-			inOrder(current->get_right(), out, num);
-		if (counter == num) return;
-	}
-
-
-	static int modul (int number) {
-		return (number < 0) ? -1 * number : number;
-	}
 };
