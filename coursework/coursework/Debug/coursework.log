@@ -1,4 +1,4 @@
 ﻿  MyForm.cpp
-D:\Alex\Desktop\MySelection\coursework\coursework\AVL.h(343,23): warning C4018: <: несоответствие типов со знаком и без знака
+D:\Alex\Desktop\Курсач\coursework\coursework\AVL.h(343,23): warning C4018: <: несоответствие типов со знаком и без знака
   MyForm.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
-  coursework.vcxproj -> D:\Alex\Desktop\MySelection\coursework\Debug\coursework.exe
+  coursework.vcxproj -> D:\Alex\Desktop\Курсач\coursework\Debug\coursework.exe

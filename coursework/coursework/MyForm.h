@@ -39,16 +39,22 @@ namespace coursework {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Column1;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Column2;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Column3;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Column4;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Column5;
+
+
 	private: System::Windows::Forms::Label^ label5;
 	private: System::Windows::Forms::Label^ label6;
 	private: System::Windows::Forms::Button^ button6;
 	private: System::Windows::Forms::TextBox^ textBox3;
 	private: System::Windows::Forms::Button^ button5;
 	private: System::Windows::Forms::Label^ label4;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Column6;
+
 	private: System::Windows::Forms::TextBox^ textBox1;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Column4;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Column5;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Column6;
+
+
+
 	private: System::Windows::Forms::TextBox^ textBox2;
 
 
@@ -95,6 +101,7 @@ namespace coursework {
 		/// содержимое этого метода с помощью редактора кода.
 		/// </summary>
 		void InitializeComponent(void) {
+			System::Windows::Forms::DataGridViewCellStyle^ dataGridViewCellStyle1 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
 			System::Windows::Forms::DataVisualization::Charting::ChartArea^ chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
 			System::Windows::Forms::DataVisualization::Charting::Legend^ legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
 			System::Windows::Forms::DataVisualization::Charting::Series^ series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
@@ -171,6 +178,7 @@ namespace coursework {
 			// 
 			// tabPage1
 			// 
+			this->tabPage1->BackColor = System::Drawing::Color::LightGreen;
 			this->tabPage1->Controls->Add(this->button4);
 			this->tabPage1->Controls->Add(this->label3);
 			this->tabPage1->Controls->Add(this->numericUpDown5);
@@ -182,11 +190,10 @@ namespace coursework {
 			this->tabPage1->Size = System::Drawing::Size(1278, 726);
 			this->tabPage1->TabIndex = 0;
 			this->tabPage1->Text = L"Алгоритмы сортировки и поиска";
-			this->tabPage1->UseVisualStyleBackColor = true;
 			// 
 			// button4
 			// 
-			this->button4->Location = System::Drawing::Point(575, 160);
+			this->button4->Location = System::Drawing::Point(575, 143);
 			this->button4->Margin = System::Windows::Forms::Padding(2);
 			this->button4->Name = L"button4";
 			this->button4->Size = System::Drawing::Size(135, 74);
@@ -208,6 +215,7 @@ namespace coursework {
 			// 
 			// numericUpDown5
 			// 
+			this->numericUpDown5->BackColor = System::Drawing::SystemColors::Info;
 			this->numericUpDown5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 26.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->numericUpDown5->Location = System::Drawing::Point(575, 82);
@@ -218,6 +226,7 @@ namespace coursework {
 			// 
 			// groupBox4
 			// 
+			this->groupBox4->BackColor = System::Drawing::Color::PaleGreen;
 			this->groupBox4->Controls->Add(this->dataGridView2);
 			this->groupBox4->Controls->Add(this->chart2);
 			this->groupBox4->Location = System::Drawing::Point(718, 5);
@@ -231,11 +240,22 @@ namespace coursework {
 			// 
 			// dataGridView2
 			// 
+			this->dataGridView2->BackgroundColor = System::Drawing::SystemColors::Info;
+			dataGridViewCellStyle1->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
+			dataGridViewCellStyle1->BackColor = System::Drawing::SystemColors::Info;
+			dataGridViewCellStyle1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
+			dataGridViewCellStyle1->ForeColor = System::Drawing::SystemColors::WindowText;
+			dataGridViewCellStyle1->SelectionBackColor = System::Drawing::SystemColors::Highlight;
+			dataGridViewCellStyle1->SelectionForeColor = System::Drawing::SystemColors::Info;
+			dataGridViewCellStyle1->WrapMode = System::Windows::Forms::DataGridViewTriState::True;
+			this->dataGridView2->ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			this->dataGridView2->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 			this->dataGridView2->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(3) {
 				this->Column4,
 					this->Column5, this->Column6
 			});
+			this->dataGridView2->GridColor = System::Drawing::SystemColors::Info;
 			this->dataGridView2->Location = System::Drawing::Point(4, 52);
 			this->dataGridView2->Margin = System::Windows::Forms::Padding(2);
 			this->dataGridView2->Name = L"dataGridView2";
@@ -261,18 +281,20 @@ namespace coursework {
 			// 
 			// Column6
 			// 
-			this->Column6->HeaderText = L"Перестановки/Балансировки";
+			this->Column6->HeaderText = L"Перестановки/\nБалансировки";
 			this->Column6->MinimumWidth = 8;
 			this->Column6->Name = L"Column6";
-			this->Column6->Width = 200;
+			this->Column6->Width = 328;
 			// 
 			// chart2
 			// 
+			this->chart2->BackColor = System::Drawing::SystemColors::Info;
+			this->chart2->BorderlineColor = System::Drawing::SystemColors::Info;
 			chartArea1->Name = L"ChartArea1";
 			this->chart2->ChartAreas->Add(chartArea1);
 			legend1->Name = L"Legend1";
 			this->chart2->Legends->Add(legend1);
-			this->chart2->Location = System::Drawing::Point(58, 361);
+			this->chart2->Location = System::Drawing::Point(4, 216);
 			this->chart2->Margin = System::Windows::Forms::Padding(2);
 			this->chart2->Name = L"chart2";
 			series1->ChartArea = L"ChartArea1";
@@ -287,12 +309,13 @@ namespace coursework {
 			series2->Name = L"Series2";
 			this->chart2->Series->Add(series1);
 			this->chart2->Series->Add(series2);
-			this->chart2->Size = System::Drawing::Size(464, 334);
+			this->chart2->Size = System::Drawing::Size(547, 495);
 			this->chart2->TabIndex = 0;
 			this->chart2->Text = L"chart2";
 			// 
 			// groupBox3
 			// 
+			this->groupBox3->BackColor = System::Drawing::Color::PaleGreen;
 			this->groupBox3->Controls->Add(this->dataGridView1);
 			this->groupBox3->Controls->Add(this->chart1);
 			this->groupBox3->Location = System::Drawing::Point(5, 5);
@@ -306,11 +329,13 @@ namespace coursework {
 			// 
 			// dataGridView1
 			// 
+			this->dataGridView1->BackgroundColor = System::Drawing::SystemColors::Info;
 			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(3) {
 				this->Column1,
 					this->Column2, this->Column3
 			});
+			this->dataGridView1->GridColor = System::Drawing::SystemColors::Info;
 			this->dataGridView1->Location = System::Drawing::Point(0, 52);
 			this->dataGridView1->Margin = System::Windows::Forms::Padding(2);
 			this->dataGridView1->Name = L"dataGridView1";
@@ -344,11 +369,13 @@ namespace coursework {
 			// 
 			// chart1
 			// 
+			this->chart1->BackColor = System::Drawing::SystemColors::Info;
+			this->chart1->BorderlineColor = System::Drawing::SystemColors::Info;
 			chartArea2->Name = L"ChartArea1";
 			this->chart1->ChartAreas->Add(chartArea2);
 			legend2->Name = L"Legend1";
 			this->chart1->Legends->Add(legend2);
-			this->chart1->Location = System::Drawing::Point(37, 361);
+			this->chart1->Location = System::Drawing::Point(0, 216);
 			this->chart1->Margin = System::Windows::Forms::Padding(2);
 			this->chart1->Name = L"chart1";
 			series3->ChartArea = L"ChartArea1";
@@ -363,12 +390,13 @@ namespace coursework {
 			series4->Name = L"Series2";
 			this->chart1->Series->Add(series3);
 			this->chart1->Series->Add(series4);
-			this->chart1->Size = System::Drawing::Size(464, 334);
+			this->chart1->Size = System::Drawing::Size(551, 495);
 			this->chart1->TabIndex = 0;
 			this->chart1->Text = L"chart1";
 			// 
 			// tabPage2
 			// 
+			this->tabPage2->BackColor = System::Drawing::Color::LightGreen;
 			this->tabPage2->Controls->Add(this->groupBox2);
 			this->tabPage2->Controls->Add(this->groupBox1);
 			this->tabPage2->Location = System::Drawing::Point(4, 34);
@@ -377,10 +405,10 @@ namespace coursework {
 			this->tabPage2->Size = System::Drawing::Size(1278, 726);
 			this->tabPage2->TabIndex = 1;
 			this->tabPage2->Text = L"Работа с деревом";
-			this->tabPage2->UseVisualStyleBackColor = true;
 			// 
 			// groupBox2
 			// 
+			this->groupBox2->BackColor = System::Drawing::Color::PaleGreen;
 			this->groupBox2->Controls->Add(this->label5);
 			this->groupBox2->Controls->Add(this->label4);
 			this->groupBox2->Controls->Add(this->textBox2);
@@ -412,6 +440,7 @@ namespace coursework {
 			// 
 			// textBox2
 			// 
+			this->textBox2->BackColor = System::Drawing::SystemColors::Info;
 			this->textBox2->Location = System::Drawing::Point(29, 386);
 			this->textBox2->Multiline = true;
 			this->textBox2->Name = L"textBox2";
@@ -421,6 +450,7 @@ namespace coursework {
 			// 
 			// textBox1
 			// 
+			this->textBox1->BackColor = System::Drawing::SystemColors::Info;
 			this->textBox1->Location = System::Drawing::Point(29, 61);
 			this->textBox1->Multiline = true;
 			this->textBox1->Name = L"textBox1";
@@ -430,6 +460,7 @@ namespace coursework {
 			// 
 			// groupBox1
 			// 
+			this->groupBox1->BackColor = System::Drawing::Color::PaleGreen;
 			this->groupBox1->Controls->Add(this->button6);
 			this->groupBox1->Controls->Add(this->label6);
 			this->groupBox1->Controls->Add(this->textBox3);
@@ -472,6 +503,7 @@ namespace coursework {
 			// 
 			// textBox3
 			// 
+			this->textBox3->BackColor = System::Drawing::SystemColors::Info;
 			this->textBox3->Location = System::Drawing::Point(28, 612);
 			this->textBox3->Multiline = true;
 			this->textBox3->Name = L"textBox3";
@@ -503,6 +535,7 @@ namespace coursework {
 			// 
 			// numericUpDown4
 			// 
+			this->numericUpDown4->BackColor = System::Drawing::SystemColors::Info;
 			this->numericUpDown4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 48, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->numericUpDown4->Location = System::Drawing::Point(187, 386);
@@ -512,6 +545,7 @@ namespace coursework {
 			// 
 			// numericUpDown3
 			// 
+			this->numericUpDown3->BackColor = System::Drawing::SystemColors::Info;
 			this->numericUpDown3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 48, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->numericUpDown3->Location = System::Drawing::Point(28, 386);
@@ -521,6 +555,7 @@ namespace coursework {
 			// 
 			// numericUpDown2
 			// 
+			this->numericUpDown2->BackColor = System::Drawing::SystemColors::Info;
 			this->numericUpDown2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 48, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->numericUpDown2->Location = System::Drawing::Point(187, 136);
@@ -530,6 +565,7 @@ namespace coursework {
 			// 
 			// numericUpDown1
 			// 
+			this->numericUpDown1->BackColor = System::Drawing::SystemColors::Info;
 			this->numericUpDown1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 48, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->numericUpDown1->Location = System::Drawing::Point(187, 35);
@@ -837,6 +873,5 @@ private: System::Void button6_Click(System::Object^ sender, System::EventArgs^ e
 			a[ind] = data;
 		}
 	}
-
 };
 }
