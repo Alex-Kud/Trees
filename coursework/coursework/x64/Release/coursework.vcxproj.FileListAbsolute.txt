@@ -1,0 +1,3 @@
+C:\Users\sasha\OneDrive\Рабочий стол\coursework (2)\coursework\x64\Release\coursework.vcxproj.AssemblyReference.cache
+C:\Users\sasha\OneDrive\Рабочий стол\coursework (2)\coursework\x64\Release\coursework.MyForm.resources
+C:\Users\sasha\OneDrive\Рабочий стол\coursework (2)\coursework\x64\Release\coursework.vcxproj.GenerateResource.cache
