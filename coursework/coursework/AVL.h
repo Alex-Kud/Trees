@@ -1,16 +1,14 @@
 #pragma once
-#include <iostream>
 
 #include "Node.h"
 #include <stack>
-#include <cmath>
 #include <string>
 using namespace std;
 class AVL {
 private:
-	Node* root = nullptr;
-	int count = 0;
-	int N;
+	Node* root = nullptr; // Корень дерева
+	int count = 0; // Текущее количество узлов
+	int N; // Размерность дерева
 public:
 	// Конструкторы
 	AVL();
@@ -23,9 +21,9 @@ public:
 	void add(int val, int& sr, int& per);
 	// Удаление значения
 	void remove(int n, string& mess);
-	// Поиск ключа
+	// Поиск ключа (с сохранением пути до него)
 	void avl_looking(int key, int* path, bool& is_found) const;
-	// Поиск ключа
+	// Поиск ключа (без сохранения пути до него)
 	int avl_search(int key, double& sr) const;
 	// Обход слева направо. Вернет список наименьших значений
 	void left_to_right(int* data, int n) const;

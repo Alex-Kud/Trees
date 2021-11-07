@@ -23,7 +23,7 @@ void AVL::add(int val) {
 		bool* path = new bool[N];
 		// Переменная, чтобы проверить увеличилась ли высота дерева (была на уровне с новой ячейкой другая)
 		// Если добавляется уровень - true
-		bool isAdd = false;
+		bool is_add = false;
 		int c = 0;
 		// Пока не достигнут конец дерева
 		while (!isEnd) {
@@ -39,7 +39,7 @@ void AVL::add(int val) {
 				if (current->get_left() == nullptr) {
 					// Добавили уровень
 					if (current->get_right() == nullptr)
-						isAdd = true;
+						is_add = true;
 					current->set_left(new Node(val, current));
 					count++;
 					isEnd = true;
@@ -55,7 +55,7 @@ void AVL::add(int val) {
 				if (current->get_right() == nullptr) {
 					// Добавили уровень
 					if (current->get_left() == nullptr)
-						isAdd = true;
+						is_add = true;
 					current->set_right(new Node(val, current));
 					count++;
 					isEnd = true;
@@ -67,10 +67,10 @@ void AVL::add(int val) {
 			}
 				
 			// Если добавили уровень, значит увеличиваем height
-			if (isAdd) {
+			if (is_add) {
 				current = root;
 				current->set_height(current->get_height() + 1);
-				//Увеличиваем значение высоты height на всех уровнях
+				// Увеличиваем значение высоты height на всех уровнях
 				for (int j = 0; j < c; j++) {
 					if (path[j])
 						current = current->get_right();
@@ -78,7 +78,7 @@ void AVL::add(int val) {
 						current = current->get_left();
 					current->set_height(current->get_height() + 1);
 				}
-
+				// Балансировка при необходимости
 				for (int j = 0; j < c; j++) {
 					if(abs(need_balance(current)) >= 2)
 						balance(current);
@@ -92,7 +92,7 @@ void AVL::add(int val) {
 			}
 			c++;
 		}
-		delete[] path;
+		delete[] path; // Освобождение памяти
 	}
 }
 // Добавление значения (для сортировки)
@@ -166,7 +166,7 @@ void AVL::add(int val, int& sr, int& per) {
 						current = current->get_left();
 					current->set_height(current->get_height() + 1);
 				}
-
+				// Балансировка при необходимости
 				for (int j = 0; j < c; j++) {
 					if (abs(need_balance(current)) >= 2) {
 						balance(current);
@@ -184,38 +184,37 @@ void AVL::add(int val, int& sr, int& per) {
 			}
 			c++;
 		}
-		delete[] path;
+		delete[] path; // освобождение памяти
 	}
 }
 // Удаление значения
 void AVL::remove(int n, string& mess) {
-	double sr = 0; // Чтоб было
 	int* pa = new int[N]; // 0 - лево, 1 - право
 	for (int i = 0; i < N; ++i)
 		pa[i] = -1;
-	bool isFound;
-	avl_looking(n, pa, isFound);
-	if (!isFound) {
-		mess = "Значение не найдено, значит удалять нечего";
+	bool is_found;
+	avl_looking(n, pa, is_found);
+	if (!is_found) {
+		mess = "Значение не найдено! Операция невозможна!";
 		return;
 	}
 	else {
 		Node* current = root;
 		int l = 0;
 		while (pa[l] != -1) {
-			if (pa[l] == 1) // если право
+			if (pa[l] == 1) // Если право
 				current = current->get_right();
 			else if (pa[l] == 0)
 				current = current->get_left();
 			++l;
 		}
 
-		//есть одинаковые
+		// Есть одинаковые
 		if (current->get_same() != 0) {
 			current->set_same(current->get_same() - 1);
 			return;
 		}
-			//последний элемент
+		// Последний элемент
 		else if (current->get_left() == nullptr && current->get_right() == nullptr) {
 			Node* temp = current->get_parent();
 			if (current == root) {
@@ -237,12 +236,12 @@ void AVL::remove(int n, string& mess) {
 				temp = temp->get_parent();
 				fix_height(temp);
 			}
-			//для корня
+			// Для корня
 			if (abs(need_balance(temp)) >= 2)
 				balance(temp);
 			fix_height(temp);
 		}
-			//нет левого поддереваа
+		// Нет левого поддереваа
 		else if (current->get_left() == nullptr) {
 			Node* temp = current->get_parent();
 			if (current == root) {
@@ -263,7 +262,7 @@ void AVL::remove(int n, string& mess) {
 				current->set_left(nullptr);
 			}
 		}
-			//нет правого поддерева
+		// Нет правого поддерева
 		else if (current->get_right() == nullptr) {
 			Node* temp = current->get_parent();
 			if (current == root) {
@@ -284,8 +283,8 @@ void AVL::remove(int n, string& mess) {
 				current->set_right(nullptr);
 			}
 		}
+		// Есть 2 поддерева
 		else {
-			// есть 2 поддерева
 			Node* temp = current->get_right();
 			while (temp->get_left() != nullptr)
 				temp = temp->get_left();
@@ -299,71 +298,81 @@ void AVL::remove(int n, string& mess) {
 				temp1->set_left(nullptr);
 				temp->set_parent(nullptr);
 			}
-
+			// Балансировка при необходимости
 			while (temp1->get_parent() != nullptr) {
 				if (abs(need_balance(temp1)) >= 2)
 					balance(temp1);
 				temp1 = temp1->get_parent();
 				fix_height(temp1);
 			}
+			// Для корня
 			if (abs(need_balance(temp1)) >= 2)
 				balance(temp1);
 			fix_height(temp1);
 		}
 	}
-	delete[] pa;
+	delete[] pa; // Освобождение памяти
 }
-// Поиск ключа
-void AVL::avl_looking(int key, int* path, bool& is_found) const {
+// Поиск ключа (с сохранением пути до него)
+void AVL::avl_looking(const int key, int* path, bool& is_found) const {
 	Node* current = root;
-	//есть ли в дереве ключ
-	bool isHere = false;
+	// Есть ли в дереве ключ
+	bool is_here = false;
 	int c = 0;
-	while (!isHere) {
+	// Пока ключ не найден
+	while (!is_here) {
+		// Если узла не существует
 		if (current == nullptr)
 			break;
+		// Если ключ найден
 		else if (current->get_value() == key)
-			isHere = true;
+			is_here = true;
+		// Если значение в текщем узле меньше ключа
 		else if (current->get_value() < key) {
 			current = current->get_right();
 			path[c] = true;
 		}
+		// Если значение в текщем узле больше ключа
 		else if (current->get_value() > key) {
-
 			current = current->get_left();
 			path[c] = false;
 		}
 		c++;
 	}
-	is_found = isHere;
+	is_found = is_here; // Возврат статуса найденности ключа
 }
-// Поиск ключа
-int AVL::avl_search(int key, double& sr) const {
+// Поиск ключа (без сохранения пути до него)
+int AVL::avl_search(const int key, double& sr) const {
 	Node* current = root;
-	//есть ли в дереве ключ
-	bool isHere = false;
-	while (!isHere) {
+	// Есть ли в дереве ключ
+	bool is_here = false;
+	// Пока ключ не найден
+	while (!is_here) {
+		// Если узла не существует
 		if (current == nullptr) {
 			sr++;
 			break;
 		}
+		// Если ключ найден
 		else if (current->get_value() == key) {
 			sr += 2;
-			isHere = true;
+			is_here = true;
 		}
+		// Если значение в текщем узле меньше ключа
 		else if (current->get_value() < key) {
 			sr += 3;
 			current = current->get_right();
 		}
+		// Если значение в текщем узле больше ключа
 		else if (current->get_value() > key) {
 			sr += 3;
 			current = current->get_left();
 		}
 	}
-	return (isHere) ? 1 : 0;
+	return (is_here) ? 1 : 0; // Возвращает 1, если ключ найден и 0, если не найден
 }
-// Обход слева направо. Вернет список наименьших значений
-void AVL::left_to_right(int* data, int n) const {
+// Обход слева направо. Вернет упорядоченный массив первых n значений
+void AVL::left_to_right(int* data, const int n) const {
 	const Node* current = root;
 	for (int i = 0; i < n; ++i)
 		data[i] = -1;
@@ -373,41 +382,41 @@ void AVL::left_to_right(int* data, int n) const {
 // Вывод дерева
 void AVL::print_tree(System::Windows::Forms::TextBox^ textBox) const {
 	textBox->Text = "";
-	stack <Node*> global_stack; // общий стек для значений дерева
-	global_stack.push(root);
-	bool is_row_empty = false;
-	string out;
-	while (!is_row_empty) {
-		stack <Node*> local_stack; // локальный стек для задания потомков элемента
-		is_row_empty = true;
-		while (!global_stack.empty()) { // покуда в общем стеке есть элементы
-			Node* temp = global_stack.top(); // берем следующий, при этом удаляя его из стека
-			global_stack.pop();
+	stack <Node*> shared_stack; // Общий стек для значений дерева
+	shared_stack.push(root);
+	bool empty = false;
+	string out; // Переменная для вывода
+	while (!empty) {
+		stack <Node*> internal_stack; // Для задания потомков элемента
+		empty = true;
+		while (!shared_stack.empty()) { // Общий стек не пуст
+			Node* temp = shared_stack.top(); // Переход к следующему элементу
+			shared_stack.pop();	// Удаление предыдущего
 
 			if (temp != nullptr) {
-				out.append(to_string(temp->get_value())); // выводим его значение в консоли
+				out.append(to_string(temp->get_value())); // Добавление значения элемента в переменную для вывода
 				out.push_back('[');
-				out.append(to_string(temp->get_same()));
+				out.append(to_string(temp->get_same()));  // Добавление количества дубликатов в переменную для вывода
 				out.push_back(']');
 				out.push_back(';');
 
-				local_stack.push(temp->get_left()); // сохраняем в локальный стек, наследники текущего элемента
-				local_stack.push(temp->get_right());
+				internal_stack.push(temp->get_left()); // Добавление наследников во внутренний стек
+				internal_stack.push(temp->get_right());
 				if (temp->get_left() != nullptr ||
 					temp->get_right() != nullptr)
-					is_row_empty = false;
+					empty = false;
 			}
 			else {
-				out.append("____; "); // - если элемент пустой
-				local_stack.push(nullptr);
-				local_stack.push(nullptr);
+				out.append("____; "); // Если значения не найдено
+				internal_stack.push(nullptr);
+				internal_stack.push(nullptr);
 			}
 		}
-		textBox->Text += gcnew System::String(out.c_str()) + System::Environment::NewLine;
+		textBox->Text += gcnew System::String(out.c_str()) + System::Environment::NewLine; // Вывод одного уровня
 		out = "";
-		while (!local_stack.empty()) {
-			global_stack.push(local_stack.top()); // перемещаем все элементы из локального стека в глобальный
-			local_stack.pop();
+		while (!internal_stack.empty()) {
+			shared_stack.push(internal_stack.top()); // Перенос элементов из внутреннего стека в общий
+			internal_stack.pop();
 		}
 	}
 }
@@ -455,12 +464,12 @@ inline void AVL::LL(Node* current) {
 		root = current;
 	}
 	else {
-		Node* curPred = current->get_parent();
+		Node* cur_pred = current->get_parent();
 
-		if (curPred->get_left() != nullptr && curPred->get_left() == current)
-			curPred->set_left(current->get_right());
+		if (cur_pred->get_left() != nullptr && cur_pred->get_left() == current)
+			cur_pred->set_left(current->get_right());
 		else
-			curPred->set_right(current->get_right());
+			cur_pred->set_right(current->get_right());
 		Node* temp = current->get_right();
 		current->set_parent(temp);
 		if (temp->get_left() != nullptr) {
@@ -469,7 +478,7 @@ inline void AVL::LL(Node* current) {
 		}
 		else
 			current->set_right(nullptr);
-		temp->set_parent(curPred);
+		temp->set_parent(cur_pred);
 		temp->set_left(current);
 		fix_height(current);
 		fix_height(temp);
@@ -490,12 +499,12 @@ inline void AVL::RR(Node* current) {
 		root = current;
 	}
 	else {
-		Node* curPred = current->get_parent();
+		Node* cur_pred = current->get_parent();
 		Node* temp = current->get_left();
-		if (curPred->get_left() != nullptr && curPred->get_left() == current)
-			curPred->set_left(current->get_left());
+		if (cur_pred->get_left() != nullptr && cur_pred->get_left() == current)
+			cur_pred->set_left(current->get_left());
 		else
-			curPred->set_right(current->get_left());
+			cur_pred->set_right(current->get_left());
 		current->set_parent(temp);
 		if (temp->get_right() != nullptr) {
 			current->set_left(temp->get_right());
@@ -503,7 +512,7 @@ inline void AVL::RR(Node* current) {
 		}
 		else
 			current->set_left(nullptr);
-		temp->set_parent(curPred);
+		temp->set_parent(cur_pred);
 		temp->set_right(current);
 		fix_height(current);
 		fix_height(temp);

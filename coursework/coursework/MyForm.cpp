@@ -1,6 +1,6 @@
 #include "MyForm.h"
 #include <Windows.h>
-
+#include <algorithm>
 using namespace coursework; // Название проекта
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -679,6 +679,7 @@ void MyForm::button3_click(Object^ sender, EventArgs^ e) {
 }
 // Поиск и сортировка
 void MyForm::button4_click(Object^ sender, EventArgs^ e) {
+	// Генерация строк таблица, если ещё не произошла
 	if (search_table_flag) {
 		tree->set_N(N);
 		dataGridView1->Rows->Add();
@@ -698,9 +699,9 @@ void MyForm::button4_click(Object^ sender, EventArgs^ e) {
 		search_table_flag = false;
 	}
 	N = Convert::ToInt32(numericUpDown5->Value);
-	auto arr_values = new int[N];
-	auto arr_sorting = new int[N];
-	auto arr_keys = new int[N];
+	int* arr_values = new int[N];	// Массив значений для поиск
+	int* arr_sorting = new int[N];	// Массив значений для сортировки
+	int* arr_keys = new int[N];		// Массив ключей для поиска
 	for (int i = 0; i < N; ++i) {
 		arr_values[i] = rand() % 100;
 		arr_sorting[i] = arr_values[i];
@@ -708,33 +709,36 @@ void MyForm::button4_click(Object^ sender, EventArgs^ e) {
 	}
 
 #pragma region Search
-	chart1->Series["Series1"]->Points->Clear();
+	chart1->Series["Series1"]->Points->Clear();	// Очистка графиков
 	chart1->Series["Series2"]->Points->Clear();
 	for (int i = N / 10; i <= N; i = i + N / 10) {
 		// Поиск в AVL-дереве
-		auto begin_search_tree_chart = chrono::high_resolution_clock::now();
-		tree = new AVL(i);
-		for (int j = 0; j < i; ++j)
-			tree->add(arr_values[j]);
-		double comparison_tree_search_chart = 0;
-		int found_quantity_tree_chart = 0;
-		for (int j = 0; j < i; ++j)
+		auto begin_search_tree_chart = chrono::high_resolution_clock::now(); // Время начала работы алгоритма
+		tree = new AVL(i); // Создание нового дерева
+		for (int j = 0; j < i; ++j) // Заполнение дерева
+			tree->add(arr_values[j]); 
+		double comparison_tree_search_chart = 0; // Количество сравнений
+		int found_quantity_tree_chart = 0;	// Количество найденных ключей
+		for (int j = 0; j < i; ++j) // Поиск ключей в дереве
 			found_quantity_tree_chart += tree->avl_search(arr_keys[j], comparison_tree_search_chart);
-		auto end_search_tree_chart = chrono::high_resolution_clock::now();
+		auto end_search_tree_chart = chrono::high_resolution_clock::now(); // Время завершения работы алгоритма
 		auto time_search_tree_chart = chrono::duration_cast<chrono::duration < double>>(end_search_tree_chart - begin_search_tree_chart);
 		chart1->Series["Series2"]->Points->AddXY(i, time_search_tree_chart.count() * 10000);
+
 		// Бинарый поиск
-		auto begin_binary_search_chart = chrono::high_resolution_clock::now();
-		forward_include(arr_values, i);
-		double comparison_binary_search_chart = 0;
-		int found_quantity_binary_chart = 0;
-		for (int j = 0; j < i; ++j)
+		auto begin_binary_search_chart = chrono::high_resolution_clock::now(); // Время начала работы алгоритма
+		sort(arr_values, arr_values + i); // Сортировка массива для бинарного поиска (сортировка прямым включением примерно в 3 раза дольше)
+		double comparison_binary_search_chart = 0;	// Количество сравнений
+		int found_quantity_binary_chart = 0;		// Количество найденных элементов
+		for (int j = 0; j < i; ++j)	// Бианарный поиск
 			found_quantity_binary_chart += opt_bin_looking(arr_values, i, arr_keys[j], comparison_binary_search_chart);
-		auto end_binary_search_chart = chrono::high_resolution_clock::now();
+		auto end_binary_search_chart = chrono::high_resolution_clock::now(); // Время завершения работы алгоритма
 		auto time_binary_search_chart = chrono::duration_cast<chrono::duration < double>>(end_binary_search_chart - begin_binary_search_chart);
+
 		chart1->Series["Series1"]->Points->AddXY(i, time_binary_search_chart.count() * 10000);
-		// N = 259; шаг 25
+
 		if (i == (N / 10) * 10) {
+			// Заполнение таблицы с характеристиками поиска
 			dataGridView1->Rows[0]->Cells[0]->Value = Convert::ToString(time_binary_search_chart.count() * 10000);
 			dataGridView1->Rows[0]->Cells[1]->Value = found_quantity_binary_chart;
 			dataGridView1->Rows[0]->Cells[2]->Value = comparison_binary_search_chart / N;
@@ -746,35 +750,33 @@ void MyForm::button4_click(Object^ sender, EventArgs^ e) {
 #pragma endregion
 
 #pragma region Sorting
-	chart2->Series["Series1"]->Points->Clear();
+	chart2->Series["Series1"]->Points->Clear();	// Очистка графиков
 	chart2->Series["Series2"]->Points->Clear();
 	for (int i = N / 10; i <= N; i = i + N / 10) {
-		for (int k = 0; k < N; ++k)
+		for (int k = 0; k < N; ++k) // Обновление значений массива
 			arr_sorting[k] = rand() % 100;
+
 		// AVL-сортировка
-		const auto begin_tree_sorting_chart = chrono::high_resolution_clock::now();
-		tree = new AVL(i);
+		const auto begin_tree_sorting_chart = chrono::high_resolution_clock::now(); // Время начала работы алгоритма
+		tree = new AVL(i);  // Создание нового дерева
 		int comparisons_tree_sort_chart = 0, permutations_tree_chart = 0;
-		for (int j = 0; j < i; ++j)
+		for (int j = 0; j < i; ++j)	// Заполнение дерева
 			tree->add(arr_sorting[j], comparisons_tree_sort_chart, permutations_tree_chart);
-		double sr2 = 0;
-		int found_quantity2 = 0;
-		for (int j = 0; j < i; ++j)
-			found_quantity2 += tree->avl_search(arr_keys[j], sr2);
-		const auto end_tree_sorting_chart = chrono::high_resolution_clock::now();
+		const auto end_tree_sorting_chart = chrono::high_resolution_clock::now(); // Время завершения работы алгоритма
 		const auto time_tree_sorting_chart = chrono::duration_cast<chrono::duration < double>>(end_tree_sorting_chart - begin_tree_sorting_chart);
 		chart2->Series["Series2"]->Points->AddXY(i, time_tree_sorting_chart.count() * 10000);
 
 		// Сортировка прямым включением
-		const auto begin_direct_sorting_chart = chrono::high_resolution_clock::now();
+		const auto begin_direct_sorting_chart = chrono::high_resolution_clock::now();// Время начала работы алгоритма
 		int comparisons_direct_sort_chart = 0, permutations_direct_sort_chart = 0;
-		forward_include(arr_sorting, i, permutations_direct_sort_chart, comparisons_direct_sort_chart);
-		const auto end_direct_sorting_chart = chrono::high_resolution_clock::now();
+		forward_include(arr_sorting, i, permutations_direct_sort_chart, comparisons_direct_sort_chart); // Сортировка прямым включением
+		const auto end_direct_sorting_chart = chrono::high_resolution_clock::now(); // Время завершения работы алгоритма
 		const auto time_direct_sorting_chart = chrono::duration_cast<chrono::duration < double>>(end_direct_sorting_chart - begin_direct_sorting_chart);
 
 		chart2->Series["Series1"]->Points->AddXY(i, time_direct_sorting_chart.count() * 10000);
 
 		if (i == (N / 10) * 10) {
+			// Заполнение таблицы с характеристиками поиска
 			dataGridView2->Rows[0]->Cells[0]->Value = Convert::ToString(time_direct_sorting_chart.count() * 10000);
 			dataGridView2->Rows[0]->Cells[1]->Value = comparisons_direct_sort_chart;
 			dataGridView2->Rows[0]->Cells[2]->Value = permutations_direct_sort_chart;
@@ -790,13 +792,16 @@ void MyForm::button4_click(Object^ sender, EventArgs^ e) {
 		}
 	}
 #pragma endregion
+	delete[] arr_values; // Очистка памяти
+	delete[] arr_sorting;
+	delete[] arr_keys;
 }
 // Начать сначала
 void MyForm::button6_click(Object^ sender, EventArgs^ e) {
 	tree_demonstration = new AVL();
 	textBox1->Text = "";
 	textBox2->Text = "";
-	textBox3->Text = "[n] - количество повторов \n Вы успешно начали заново";;
+	textBox3->Text = "[n] - количество повторов \n Вы успешно начали заново";
 }
 // Оптимальный бинарный поиск
 int MyForm::opt_bin_looking(int arr[], const int n, const int key, double& comparisons) {
@@ -837,7 +842,6 @@ void MyForm::forward_include(int a[], const int n) {
 			a[ind] = a[ind - 1];
 			ind--;
 		}
-
 		a[ind] = data;
 	}
 }

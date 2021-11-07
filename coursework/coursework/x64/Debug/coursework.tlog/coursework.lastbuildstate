@@ -1,2 +1,2 @@
-PlatformToolSet=v142:VCToolArchitecture=Native32Bit:VCToolsVersion=14.29.30133:TargetPlatformVersion=10.0.18362.0:TargetFrameworkVersion=v4.6.1::EnableManagedIncrementalBuild=true:
-Debug|x64|C:\Users\sasha\OneDrive\Рабочий стол\coursework (2)\|
+PlatformToolSet=v142:VCToolArchitecture=Native32Bit:VCToolsVersion=14.29.30133:VCServicingVersionATL=14.29.30136:VCServicingVersionCrtHeaders=14.29.30136:VCServicingVersionCompilers=14.29.30136:TargetPlatformVersion=10.0.18362.0:TargetFrameworkVersion=v4.6.1::EnableManagedIncrementalBuild=true:
+Debug|x64|D:\Alex\Desktop\Курсач\coursework\|
