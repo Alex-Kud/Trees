@@ -6,7 +6,6 @@ Node::Node(const int value) {
 	left = nullptr;
 	right = nullptr;
 	parent = nullptr;
-	same = 0;
 }
 
 Node::Node(const int value, Node* par) {
@@ -15,5 +14,4 @@ Node::Node(const int value, Node* par) {
 	left = nullptr;
 	right = nullptr;
 	parent = par;
-	same = 0;
 }

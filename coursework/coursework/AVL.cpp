@@ -27,14 +27,8 @@ void AVL::add(int val) {
 		int c = 0;
 		// Пока не достигнут конец дерева
 		while (!isEnd) {
-			// Если значения равны
-			if (val == current->get_value()) {
-				current->set_same(current->get_same() + 1);
-				count++;
-				isEnd = true;
-			}
-				// Если значение меньше корня
-			else if (val < current->get_value()) {
+			// Если значение меньше корня
+			if (val < current->get_value()) {
 				// Дошли до конца
 				if (current->get_left() == nullptr) {
 					// Добавили уровень
@@ -49,7 +43,7 @@ void AVL::add(int val) {
 					path[c] = false;
 				}
 			}
-				// Если значение больше корня
+			// Если значение больше или = корню
 			else {
 				// Дошли до конца
 				if (current->get_right() == nullptr) {
@@ -112,16 +106,9 @@ void AVL::add(int val, int& sr, int& per) {
 		int c = 0;
 		// Пока не достигнут конец дерева
 		while (!isEnd) {
-			// Если значения равны
-			if (val == current->get_value()) {
-				current->set_same(current->get_same() + 1);
-				count++;
-				isEnd = true;
+			// Если значение меньше корня
+			if (val < current->get_value()) {
 				sr++;
-			}
-				// Если значение меньше корня
-			else if (val < current->get_value()) {
-				sr += 2;
 				// Дошли до конца
 				if (current->get_left() == nullptr) {
 					// Добавили уровень
@@ -136,9 +123,9 @@ void AVL::add(int val, int& sr, int& per) {
 					path[c] = false;
 				}
 			}
-				// Если значение больше корня
+			// Если значение больше или = корня
 			else {
-				sr += 2;
+				sr++;
 				// Дошли до конца
 				if (current->get_right() == nullptr) {
 					// Добавили уровень
@@ -209,13 +196,8 @@ void AVL::remove(int n, string& mess) {
 			++l;
 		}
 
-		// Есть одинаковые
-		if (current->get_same() != 0) {
-			current->set_same(current->get_same() - 1);
-			return;
-		}
 		// Последний элемент
-		else if (current->get_left() == nullptr && current->get_right() == nullptr) {
+		if (current->get_left() == nullptr && current->get_right() == nullptr) {
 			Node* temp = current->get_parent();
 			if (current == root) {
 				root = nullptr;	// Для корня
@@ -395,9 +377,6 @@ void AVL::print_tree(System::Windows::Forms::TextBox^ textBox) const {
 
 			if (temp != nullptr) {
 				out.append(to_string(temp->get_value())); // Добавление значения элемента в переменную для вывода
-				out.push_back('[');
-				out.append(to_string(temp->get_same()));  // Добавление количества дубликатов в переменную для вывода
-				out.push_back(']');
 				out.push_back(';');
 
 				internal_stack.push(temp->get_left()); // Добавление наследников во внутренний стек
@@ -407,7 +386,7 @@ void AVL::print_tree(System::Windows::Forms::TextBox^ textBox) const {
 					empty = false;
 			}
 			else {
-				out.append("____; "); // Если значения не найдено
+				out.append("___; "); // Если значения не найдено
 				internal_stack.push(nullptr);
 				internal_stack.push(nullptr);
 			}
@@ -419,6 +398,13 @@ void AVL::print_tree(System::Windows::Forms::TextBox^ textBox) const {
 			internal_stack.pop();
 		}
 	}
+}
+// Очистка дерева
+void AVL::clear(const Node* r) {
+	const Node* current = r;
+	if (current->get_left() != nullptr) clear(current->get_left());
+	if (current->get_right() != nullptr) clear(current->get_right());
+	delete r;
 }
 
 // Проверка, нужна ли балансировка
@@ -523,10 +509,6 @@ void AVL::in_order(const Node* current, int* data, const int num, int& c) {
 	if (current->get_left() == nullptr) {
 		data[c] = current->get_value();
 		c++;
-		for (int i = 0; i < current->get_same(); i++) {
-			data[c] = current->get_value();
-			c++;
-		}
 		if (current->get_right() != nullptr)
 			in_order(current->get_right(), data, num, c);
 		return;
@@ -536,10 +518,6 @@ void AVL::in_order(const Node* current, int* data, const int num, int& c) {
 		in_order(current->get_left(), data, num, c);
 	data[c] = current->get_value();
 	c++;
-	for (int i = 0; i < current->get_same(); i++) {
-		data[c] = current->get_value();
-		c++;
-	}
 	if (c == num) return;
 	if (current->get_right() != nullptr)
 		in_order(current->get_right(), data, num, c);

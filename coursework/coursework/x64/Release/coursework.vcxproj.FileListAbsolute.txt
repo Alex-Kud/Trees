@@ -4,3 +4,6 @@ C:\Users\sasha\OneDrive\Рабочий стол\coursework (2)\coursework\x64\Re
 D:\Alex\Desktop\Курсач\coursework\coursework\x64\Release\coursework.vcxproj.AssemblyReference.cache
 D:\Alex\Desktop\Курсач\coursework\coursework\x64\Release\coursework.MyForm.resources
 D:\Alex\Desktop\Курсач\coursework\coursework\x64\Release\coursework.vcxproj.GenerateResource.cache
+D:\Alex\Desktop\coursework\coursework\x64\Release\coursework.vcxproj.AssemblyReference.cache
+D:\Alex\Desktop\coursework\coursework\x64\Release\coursework.MyForm.resources
+D:\Alex\Desktop\coursework\coursework\x64\Release\coursework.vcxproj.GenerateResource.cache

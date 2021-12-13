@@ -13,9 +13,9 @@ namespace coursework {
 	public ref class MyForm : public Form {
 	public:
 		MyForm(void) {
-			N = 10000;
 			tree = new AVL();
-			tree_demonstration = new AVL();
+			tree_demo = new AVL();
+			N = 10000;
 			InitializeComponent();
 			numericUpDown1->Minimum = 0;
 			numericUpDown1->Maximum = 1000;
@@ -29,8 +29,8 @@ namespace coursework {
 			numericUpDown5->Maximum = 50000;
 		}
 	private:
-		AVL* tree;
-		AVL* tree_demonstration;
+		AVL* tree;		// ќбъ€вление дерева дл€ поиска сортировки
+		AVL* tree_demo;	// ќбъ€вление дерева дл€ демонстрации работы
 		int N;
 		bool search_table_flag = true;
 
@@ -67,6 +67,8 @@ namespace coursework {
 	protected:
 		~MyForm() {
 			if (!components) return;
+			tree->clear(tree->get_root());				// ќсвобождение пам€ти дерева дл€ поиска и сортировок
+			tree_demo->clear(tree_demo->get_root());	// ќсвобождение пам€ти дерева дл€ демонстрации работы
 			delete components;
 		}
 		// “ребуемый метод дл€ поддержки конструктора

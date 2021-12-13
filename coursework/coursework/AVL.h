@@ -14,6 +14,7 @@ public:
 	AVL();
 	AVL(int n);
 	int get_count() const { return count; }
+	Node* get_root() const { return root; }
 	void set_N(int N) { this->N = N; }
 	// Добавление значения
 	void add(int val);
@@ -29,6 +30,8 @@ public:
 	void left_to_right(int* data, int n) const;
 	// Вывод дерева
 	void print_tree(System::Windows::Forms::TextBox^ textBox) const;
+	// Очистка дерева
+	static void clear(const Node* r);
 
 private:
 	// Проверка, нужна ли балансировка

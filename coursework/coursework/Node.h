@@ -7,7 +7,6 @@ private:
     Node* left;         // Лево
     Node* right;        // Право
 	Node* parent;       // Родитель
-    int same;           // Количество одинаковых элементов
 public:
     // Конструктор для 1 значения
 	Node (const int value);
@@ -29,7 +28,4 @@ public:
 
     Node* get_parent() const { return this->parent; }
     void set_parent(Node* parent) { this->parent = parent; }
-
-    int get_same() const { return this->same; }
-    void set_same(const int same) { this->same = same; }
 };
